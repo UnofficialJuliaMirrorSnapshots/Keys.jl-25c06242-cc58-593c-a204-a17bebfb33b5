@@ -1,0 +1,20 @@
+language: julia
+os:
+  - linux
+julia:
+  - 1.0
+  - nightly
+notifications:
+  email: false
+after_success:
+  - julia --project=coverage/ -e 'using Pkg; Pkg.instantiate()'
+  - julia --project=coverage/ coverage/coverage.jl
+jobs:
+  include:
+    - stage: "Coverage and Documentation"
+      julia: 1.0
+      os: linux
+      script:
+        - julia --project=coverage/ -e 'using Pkg; Pkg.instantiate()'
+        - julia --project=coverage/ coverage/coverage.jl
+      after_success: skip
